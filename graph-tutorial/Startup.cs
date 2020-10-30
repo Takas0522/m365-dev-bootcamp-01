@@ -8,8 +8,18 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.Graph;
+using System.Net;
+using System.Net.Http.Headers;
+using GraphTutorial;
 
-namespace graph_tutorial
+namespace GraphTutorial
 {
     public class Startup
     {
@@ -23,7 +33,105 @@ namespace graph_tutorial
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services
+                // Use OpenId authentication
+                .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                // Specify this is a web app and needs auth code flow
+                .AddMicrosoftIdentityWebApp(options => {
+                    Configuration.Bind("AzureAd", options);
+
+                    options.Prompt = "select_account";
+
+                    options.Events.OnTokenValidated = async context => {
+                        var tokenAcquisition = context.HttpContext.RequestServices
+                            .GetRequiredService<ITokenAcquisition>();
+
+                        var graphClient = new GraphServiceClient(
+                            new DelegateAuthenticationProvider(async (request) => {
+                                var token = await tokenAcquisition
+                                    .GetAccessTokenForUserAsync(GraphConstants.Scopes, user:context.Principal);
+                                request.Headers.Authorization =
+                                    new AuthenticationHeaderValue("Bearer", token);
+                            })
+                        );
+
+                        // Get user information from Graph
+                        var user = await graphClient.Me.Request()
+                            .Select(u => new {
+                                u.DisplayName,
+                                u.Mail,
+                                u.UserPrincipalName,
+                                u.MailboxSettings
+                            })
+                            .GetAsync();
+
+                        context.Principal.AddUserGraphInfo(user);
+
+                        // Get the user's photo
+                        // If the user doesn't have a photo, this throws
+                        try
+                        {
+                            var photo = await graphClient.Me
+                                .Photos["48x48"]
+                                .Content
+                                .Request()
+                                .GetAsync();
+
+                            context.Principal.AddUserGraphPhoto(photo);
+                        }
+                        catch (ServiceException ex)
+                        {
+                            if (ex.IsMatch("ErrorItemNotFound") ||
+                                ex.IsMatch("ConsumerPhotoIsNotSupported"))
+                            {
+                                context.Principal.AddUserGraphPhoto(null);
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
+                        }
+                    };
+
+                    options.Events.OnAuthenticationFailed = context => {
+                        var error = WebUtility.UrlEncode(context.Exception.Message);
+                        context.Response
+                            .Redirect($"/Home/ErrorWithMessage?message=Authentication+error&debug={error}");
+                        context.HandleResponse();
+
+                        return Task.FromResult(0);
+                    };
+
+                    options.Events.OnRemoteFailure = context => {
+                        if (context.Failure is OpenIdConnectProtocolException)
+                        {
+                            var error = WebUtility.UrlEncode(context.Failure.Message);
+                            context.Response
+                                .Redirect($"/Home/ErrorWithMessage?message=Sign+in+error&debug={error}");
+                            context.HandleResponse();
+                        }
+
+                        return Task.FromResult(0);
+                    };
+                })
+                .EnableTokenAcquisitionToCallDownstreamApi(options => {
+                    Configuration.Bind("AzureAd", options);
+                }, GraphConstants.Scopes)
+                .AddMicrosoftGraph(options => {
+                    options.Scopes = string.Join(' ', GraphConstants.Scopes);
+                })
+                .AddInMemoryTokenCaches();
+
+            // Require authentication
+            services.AddControllersWithViews(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
+            // Add the Microsoft Identity UI pages for signin/out
+            .AddMicrosoftIdentityUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +151,8 @@ namespace graph_tutorial
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

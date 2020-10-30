@@ -1,6 +1,6 @@
 # プロジェクトの作成
 
-`dotnet new mvc -o graph-tutorial`
+`dotnet new mvc -o GraphTutorial`
 
 # アプリの実行
 

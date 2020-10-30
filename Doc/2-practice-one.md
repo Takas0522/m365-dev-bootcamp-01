@@ -1,10 +1,10 @@
-# 演習 - ASP.NET MVC Web アプリを作成して Azure AD アプリを登録する
+# ASP.NET MVC Web アプリを作成
 
 ## NuGetパッケージの追加
 
 ```
 dotnet add package Microsoft.Identity.Web --version 1.1.0
-dotnet add package Microsoft.Identity.MicrosoftGraph --version 1.1.0
+dotnet add package Microsoft.Identity.Web.MicrosoftGraph --version 1.1.0
 dotnet add package Microsoft.Identity.Web.UI --version 1.1.0
 dotnet add package Microsoft.Graph --version 3.18.0
 dotnet add package TimeZoneConverter
@@ -105,6 +105,8 @@ namespace GraphTutorial
 ![Graphディレクトリの作成](./.attachements/2020-10-29-21-40-44.png)
 
 ## User情報拡張メソッドの実装
+
+`Graph/GraphClaimsPrincipalExtensions.cs`を作成し下記のコードを追加する
 
 ``` csharp
 using System.Security.Claims;
