@@ -218,6 +218,12 @@ namespace GraphTutorial.Controllers
 
 ![アクセス許可](./.attachements/2020-10-30-21-58-02.png)
 
+アクセス許可されるスコープは下記のとおりです。
+
+* アクセス権をあ立てたデータへのアクセス管理(offline_access)：更新トークンを取得するためにMSALによって使用される
+* プロフィールの読み取り(User.Read)：ユーザーのプロフィールと写真の取得
+* カレンダーへのフルアクセス(Calendar.ReadWrite)：カレンダー情報の読み取りとイベントの作成・編集
+
 ## ユーザーの詳細情報を取得する
 
 ログインしたユーザーの詳細情報を取得します。
@@ -395,6 +401,25 @@ namespace GraphTutorial
     };
 })
 ```
+
+`Startup.cs`の`EnableTokenAcquisitionToCallDownstreamApi`のあと、`AddInMemoryTokenCaches`の前に下記のコードを差し込みます。
+
+``` csharp
+// Add a GraphServiceClient via dependency injection
+.AddMicrosoftGraph(options => {
+    options.Scopes = string.Join(' ', GraphConstants.Scopes);
+})
+```
+
+`Controllers`ディレクトリの`HomeController.cs`に下記のコードを追加します。
+
+``` csharp
+public IActionResult Index()
+{
+    return View();
+}
+```
+
 
 ## アプリケーションを実行してみる
 
