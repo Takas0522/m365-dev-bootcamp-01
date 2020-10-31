@@ -2,6 +2,7 @@
 
 ベースは[Create an ASP.NET Core MVC web app](https://docs.microsoft.com/ja-jp/graph/tutorials/aspnet-core?tutorial-step=1)となります。
 
+
 ## コンテンツ
 
 [0.準備](./Doc/0-preparation.md)
@@ -13,3 +14,11 @@
 [3. Azure ADアプリを作成](./Doc/3-gen-azure-ad-app.md)
 
 [4. Azure AD 認証を追加する](./Doc/4-add-azure-ad-auth.md)
+
+---
+
+Advanced
+
+[5. CalenderViewを取得する](./Doc/5-get-a-calender-view.md)
+
+[6. 新しいイベントを作成する](./Doc/6-create-new-events.md)
