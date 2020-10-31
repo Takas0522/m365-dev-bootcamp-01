@@ -411,7 +411,9 @@ namespace GraphTutorial
 })
 ```
 
-`Controllers`ディレクトリの`HomeController.cs`に下記のコードを追加します。
+トークンの確認は行えましたので、Homeに記載されているトークンは潰しておきます。
+
+`Controllers`ディレクトリの`HomeController.cs`の`Index()`を下記のコードに変更します。
 
 ``` csharp
 public IActionResult Index()
