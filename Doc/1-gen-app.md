@@ -1,15 +1,19 @@
+[←環境構築](./0-preparation.md)
+
 # プロジェクトの作成
 
 `dotnet new mvc -o GraphTutorial`
 
 # アプリの実行
 
-`ctrl + F5`でアプリケーションを実行
+`ctrl + F5`または`dotnet run`でアプリケーションを実行します。
 
 ![.NET Coreを選択](./.attachements/2020-10-29-21-18-20.png)
 
-`.vscode`ディレクトリに`launch.json`/`tasks.json`が生成される。
+`.vscode`ディレクトリに`launch.json`/`tasks.json`が生成されます。
 
-再度 `ctrl + F5` でアプリケーションを実行することが確認できればOK。
+アプリケーションを実行することが確認できればOKです。
 
 ![実行される画面](./.attachements/2020-10-29-21-21-02.png)
+
+[アプリケーションの作成→](./1-gen-app.md)

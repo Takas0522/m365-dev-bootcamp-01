@@ -1,4 +1,6 @@
-# Azure AD 認証を追加する
+[←AzureADアプリケーションの作成](./3-gen-azure-ad-app.md)
+
+# Azure AD 認証の追加
 
 これは、Microsoft Graph API を呼び出すために必要なアクセストークンを取得するために必要です。この手順では、Microsoft.Identity.Webライブラリで構築します。
 
@@ -28,7 +30,7 @@
 
 シークレットがあればユーザーのサインインフローなしにログインすることが可能となります。
 
-つまり機密情報にあたります。みだりにGitのログなどに露出しないようシークレットを保護します。
+つまり機密情報にあたります。みだりにGitのログなどに露出しないようシークレットを保護した状態で使用します。
 
 下記のコマンドを実行します。
 
@@ -44,7 +46,7 @@ dotnet user-secrets set "AzureAd:ClientSecret" "YOUR_APP_SECRET"
 
 ## サインインの実装
 
-`Graph`ディレクトリに`GraphConstants.cs`を作成
+`Graph`ディレクトリに`GraphConstants.cs`を作成します。
 
 ``` csharp
 namespace GraphTutorial
@@ -62,7 +64,7 @@ namespace GraphTutorial
 }
 ```
 
-`Startup.cs`に次のusing句を追加
+`Startup.cs`に次のusing句を追加します。
 
 ``` csharp
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -76,7 +78,7 @@ using System.Net;
 using System.Net.Http.Headers;
 ```
 
-`Startup.cs`のConfiguraServiceの中身を下記で置き換え
+`Startup.cs`のConfiguraServiceの中身を下記で置き換えます。
 
 ``` csharp
 public void ConfigureServices(IServiceCollection services)
@@ -108,7 +110,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-`Startup.cs`の`Configure`に下記の処理を追加
+`Startup.cs`の`Configure`に下記の処理を追加します。
 
 ``` csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -143,7 +145,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 ## Viewファイルの変更
 
-`Controllers/HomeController.cs`を下記の内容で書き換えます
+`Controllers/HomeController.cs`を下記の内容で書き換えます。
 
 ``` csharp
 using GraphTutorial.Models;
@@ -218,9 +220,9 @@ namespace GraphTutorial.Controllers
 
 ## ユーザーの詳細情報を取得する
 
-ログインしたユーザーの詳細情報を取得します
+ログインしたユーザーの詳細情報を取得します。
 
-`Graph/GraphClaimsPrincipalExtensions.cs`を下記の内容で書き換えます
+`Graph/GraphClaimsPrincipalExtensions.cs`を下記の内容で書き換えます。
 
 ``` csharp
 using Microsoft.Graph;
@@ -396,6 +398,10 @@ namespace GraphTutorial
 
 ## アプリケーションを実行してみる
 
-Ctrl+F5でアプリケーションを実行してみます
+アプリケーションを実行してみます。
+
+下記のようにログインしたユーザーの情報が表示されていたら成功です。
 
 ![実行結果](./.attachements/2020-10-30-23-11-56.png)
+
+[Calendar Viewを取得する→](./5-get-a-calender-view.md)

@@ -1,6 +1,6 @@
-ライブラリ`Microsoft Graph Client Library for .NET`を使用してMicrosoft Graphにアクセスします。
+[←Azure AD 認証の追加](./4-add-azure-ad-auth.md)
 
-# OutlookのCalenderイベントを取得する
+# Calendar Viewを取得する
 
 `Controllers`ディレクトリに`CalendarController.cs`を作成し、下記のコードを追加します。
 
@@ -151,7 +151,7 @@ public async Task<IActionResult> Index()
 }
 ```
 
-アプリケーションを起動し、Callenderに移動します。
+アプリケーションを起動し、Calendarに移動します。
 
 ![移動](./.attachements/2020-10-31-13-18-22.png)
 
@@ -461,4 +461,6 @@ public async Task<IActionResult> Index()
 
 アプリを起動します。下図のよう予定が表示されていたら成功です。
 
-![](./.attachements/2020-10-31-13-55-55.png)
+![カレンダー情報が表示される](./.attachements/2020-10-31-13-55-55.png)
+
+[新しいイベントを作成する→](./6-create-new-events.md)

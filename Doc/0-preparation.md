@@ -1,4 +1,4 @@
-# インストールが必要なもの
+# 環境構築
 
 ## .NET Core SDK
 
@@ -13,3 +13,5 @@ https://azure.microsoft.com/ja-jp/products/visual-studio-code/
 ## VisualStudioCode拡張
 
 https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
+
+[プロジェクトの作成→](./1-gen-app.md)

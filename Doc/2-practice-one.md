@@ -1,6 +1,14 @@
-# ASP.NET MVC Web アプリを作成
+[←プロジェクトの作成](./1-1-gen-app.md)
+
+# アプリケーションの作成
 
 ## NuGetパッケージの追加
+
+* Microsoft.Identity.Web: アクセストークンの要求と管理
+* Microsoft.Identity.Web.MicrosoftGraph: Microsoft Graph SDKとIdentity.Webの依存注入
+* Microsoft.Identity.Web.UI: ログイン/ログアウトUI
+* Microsoft.Graph: Microsoft.Graph呼び出し用
+* TimeZoneConverter: タイムゾーンコンバーター
 
 ```
 dotnet add package Microsoft.Identity.Web --version 1.1.0
@@ -10,11 +18,11 @@ dotnet add package Microsoft.Graph --version 3.18.0
 dotnet add package TimeZoneConverter
 ```
 
-## Alertsディレクトリとクラスの作成
+## Alert拡張メソッドの追加
 
-![Alertsディレクトリの作成](./.attachements/2020-10-29-21-34-11.png)
+認証時にViewにエラー/成功のメッセージを返却するためのAlert拡張メソッドを追加します。
 
-## Alerts.csの作成
+`Alerts`ディレクトリを作成し、そこに`WithAlertResult.cs`を作成し、下記のコードを追加します。
 
 ``` csharp
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +67,7 @@ namespace GraphTutorial
 }
 ```
 
-## AlertExtensions.csの作成
+同じく`Alerts`ディレクトリに`AlertExtensions.cs`を作成し、下記のコードを追加します。
 
 ``` csharp
 using Microsoft.AspNetCore.Mvc;
@@ -100,13 +108,11 @@ namespace GraphTutorial
 }
 ```
 
-## Graphディレクトリの作成
+## User拡張メソッドの追加
 
-![Graphディレクトリの作成](./.attachements/2020-10-29-21-40-44.png)
+Microsoft IDプラットフォームで生成されるオブジェクトを使用するための拡張メソッドを作成します。
 
-## User情報拡張メソッドの実装
-
-`Graph/GraphClaimsPrincipalExtensions.cs`を作成し下記のコードを追加する
+`Graph`ディレクトリを作成し、`GraphClaimsPrincipalExtensions.cs`を作成し下記のコードを追加します。
 
 ``` csharp
 using System.Security.Claims;
@@ -145,7 +151,9 @@ namespace GraphTutorial
 
 ## ビューの作成
 
-`Views/Shared`ディレクトリに`_LoginPartial.cshtml`と`_AlertPartial.cshtml`を作成する。
+アプリケーションのViewをRazorで作成します。
+
+`Views/Shared`ディレクトリに`_LoginPartial.cshtml`を追加し、下記のコードを追加します。
 
 ``` csharp
 @using GraphTutorial
@@ -174,6 +182,8 @@ else
 </ul>
 ```
 
+`Views/Shared`ディレクトリに`_AlertPartial.cshtml`を作成し、下記のコードを追加します。
+
 ``` csharp
 @{
     var type = $"{TempData["_alertType"]}";
@@ -197,7 +207,7 @@ else
 }
 ```
 
-`Views/Shared/_Layout.cshtml`の書き換え
+`Views/Shared/_Layout.cshtml`の全体を下記のコードに書き換えます。
 
 ``` csharp
 @{
@@ -259,7 +269,7 @@ else
 </html>
 ```
 
-`wwwroot/css/site.css`にCSSコードを追加
+`wwwroot/css/site.css`の下部に下記のコードを追加します。
 
 ``` css
 .nav-profile-photo {
@@ -300,7 +310,7 @@ else
 }
 ```
 
-`Views/Home/index.cshtml`を書き換え
+`Views/Home/index.cshtml`の全体を下記のコードに書き換えます。
 
 ``` csharp
 @{
@@ -326,6 +336,8 @@ else
 
 ## 動作チェック
 
-Ctrl+F5で実行してみます。
+アプリを実行してみます。下図のように表示されたら成功です。
 
 ![実行される画面](./.attachements/2020-10-29-21-50-21.png)
+
+[AzureADアプリケーションの作成→](./3-gen-azure-ad-app.md)

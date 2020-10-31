@@ -5,11 +5,11 @@
 
 ## コンテンツ
 
-[0.準備](./Doc/0-preparation.md)
+[0. 環境構築](./Doc/0-preparation.md)
 
 [1. プロジェクトの作成](./Doc/1-gen-app.md)
 
-[2. ASP.NET MVC Web アプリを作成](./Doc/2-practice-one.md)
+[2. アプリケーションの作成](./Doc/2-practice-one.md)
 
 [3. Azure ADアプリを作成](./Doc/3-gen-azure-ad-app.md)
 
