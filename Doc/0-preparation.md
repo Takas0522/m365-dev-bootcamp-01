@@ -14,4 +14,11 @@ https://azure.microsoft.com/ja-jp/products/visual-studio-code/
 
 https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
 
+## Edge/Chrome拡張
+
+CodeCopy（あるとハンズオンが楽になる…程度のもの
+
+https://chrome.google.com/webstore/detail/codecopy/fkbfebkcoelajmhanocgppanfoojcdmg
+
+
 [プロジェクトの作成→](./1-gen-app.md)
