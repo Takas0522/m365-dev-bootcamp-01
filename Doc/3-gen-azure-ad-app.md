@@ -4,6 +4,8 @@
 
 Graphデータにアクセスするための認証に使用するAzureADアプリケーションを作成していきます。
 
+[Microsfot365管理センター](https://admin.microsoft.com/)
+
 ![ActiveDirectoryの管理へ移動](./.attachements/2020-10-29-21-56-54.png)
 
 ![AzureActiveDirectoryへの移動](./.attachements/2020-10-30-21-06-55.png)
